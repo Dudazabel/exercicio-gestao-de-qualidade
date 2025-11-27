@@ -28,7 +28,7 @@ public class EquipamentoRepository {
         return equipamento;
     }
 
-    public boolean equipamentoExiste(long id) throws  SQLException{
+    public boolean equipamentoExiste(Long id) throws  SQLException{
         String query = "SELECT nome FROM Equipamento WHERE id = ?";
 
         try(Connection conn = Conexao.conectar();
@@ -56,14 +56,39 @@ public class EquipamentoRepository {
 
             ResultSet rs = stmt.executeQuery();
 
-            long ID = rs.getLong("id");
-            String nome = rs.getString("nome");
-            String numeroDeSerie = rs.getString("numeroDeSerie");
-            String areaSetor = rs.getString("areaSetor");
-            String statusOperacional = rs.getString("statusOperacional");
+            if(rs.next()){
+                Long ID = rs.getLong("id");
+                String nome = rs.getString("nome");
+                String numeroDeSerie = rs.getString("numeroDeSerie");
+                String areaSetor = rs.getString("areaSetor");
+                String statusOperacional = rs.getString("statusOperacional");
 
-            var equipamento = new Equipamento(ID, nome, numeroDeSerie, areaSetor, statusOperacional);
-            return equipamento;
+                var equipamento = new Equipamento(ID, nome, numeroDeSerie, areaSetor, statusOperacional);
+                return equipamento;
+            }
+        }
+
+        return null;
+    }
+
+    public void atualizarStatusCritica(Long id) throws SQLException{
+        String query = "UPDATE Equipamento SET statusOperacional = 'EM_MANUTENCAO'  WHERE id = ?";
+
+        try(Connection conn = Conexao.conectar();
+            PreparedStatement stmt = conn.prepareStatement(query)){
+
+            stmt.setLong(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void atulizarEquipamento(Long id) throws SQLException{
+        String query = "UPDATE eQUIPAMENTO SET statusoPERACIONAL = 'OPERACIONAL' WHERE id = ?";
+
+        try(Connection conn = Conexao.conectar();
+            PreparedStatement stmt = conn.prepareStatement(query)){
+
+            stmt.setLong(1, id);
         }
     }
 }

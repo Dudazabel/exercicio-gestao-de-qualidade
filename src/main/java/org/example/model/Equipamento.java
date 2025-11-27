@@ -11,6 +11,10 @@ public class Equipamento {
 
     private String statusOperacional;
 
+    public Equipamento() {
+
+    }
+
     public Equipamento(Long id, String nome, String numeroDeSerie, String areaSetor, String statusOperacional) {
         this.id = id;
         this.nome = nome;
