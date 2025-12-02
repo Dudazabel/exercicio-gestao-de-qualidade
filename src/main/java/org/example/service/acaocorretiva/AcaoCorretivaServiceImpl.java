@@ -21,15 +21,13 @@ public class AcaoCorretivaServiceImpl implements AcaoCorretivaService{
         boolean existe = repositoryF.falhaExiste(acao.getFalhaId());
 
         if(existe == false){
-            throw new RuntimeException();
+            throw new RuntimeException("Falha não encontrada!");
         }
 
         Falha falha = repositoryF.buscarFalhaID(acao.getFalhaId());
-        falha.setStatus("RESOLVIDA");
+        repositoryF.atualizarStatus(acao.getFalhaId());
 
-
-
-        if(falha.getStatus().equals("CRITICA")){
+        if(falha.getCriticidade().equals("CRITICA")){
             repositoryE.atulizarEquipamento(falha.getEquipamentoId());
         }
 

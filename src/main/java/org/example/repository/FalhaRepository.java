@@ -105,7 +105,14 @@ public class FalhaRepository {
     }
 
     public void atualizarStatus(Long id) throws SQLException{
-        String query = "UPDATE "
+        String query = "UPDATE Falha SET status = 'RESOLVIDA' WHERE id = ?";
+
+        try(Connection conn = Conexao.conectar();
+            PreparedStatement stmt = conn.prepareStatement(query)){
+
+            stmt.setLong(1, id);
+            stmt.executeUpdate();
+        }
     }
 
 
